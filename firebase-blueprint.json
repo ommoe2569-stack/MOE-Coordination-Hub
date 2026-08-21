@@ -1,0 +1,80 @@
+{
+  "collections": {
+    "projects": {
+      "document": {
+        "fields": {
+          "name": { "type": "string" },
+          "startDate": { "type": "string" },
+          "startTime": { "type": "string" },
+          "location": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "links": { "type": "map" },
+          "features": { "type": "map" },
+          "documents": { "type": "array" }
+        }
+      }
+    },
+    "users_management": {
+      "document": {
+        "fields": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "role": { "type": "string" },
+          "status": { "type": "string" },
+          "projectId": { "type": "string" }
+        }
+      }
+    },
+    "sessions": {
+      "document": {
+        "fields": {
+          "projectId": { "type": "string" },
+          "time": { "type": "string" },
+          "title": { "type": "string" },
+          "tag": { "type": "string" },
+          "tagColor": { "type": "string" },
+          "room": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "order": { "type": "number", "optional": true }
+        }
+      }
+    },
+    "qa_questions": {
+      "document": {
+        "fields": {
+          "projectId": { "type": "string" },
+          "q": { "type": "string" },
+          "time": { "type": "string" },
+          "isAnswered": { "type": "boolean" },
+          "answer": { "type": "string", "optional": true },
+          "createdAt": { "type": "timestamp" }
+        }
+      }
+    },
+    "social_posts": {
+      "document": {
+        "fields": {
+          "projectId": { "type": "string" },
+          "author": { "type": "string" },
+          "time": { "type": "string" },
+          "content": { "type": "string" },
+          "isAdmin": { "type": "boolean" },
+          "createdAt": { "type": "timestamp" }
+        }
+      }
+    },
+    "calendar_events": {
+      "document": {
+        "fields": {
+          "projectId": { "type": "string" },
+          "name": { "type": "string" },
+          "date": { "type": "string" },
+          "startTime": { "type": "string" },
+          "location": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "type": "string" }
+        }
+      }
+    }
+  }
+}
