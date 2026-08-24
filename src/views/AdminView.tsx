@@ -643,8 +643,6 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
 
   const linkConfigs = [
     { key: 'register', label: 'ลิงก์แบบแจ้งรายชื่อ (Google Sheet)' },
-    { key: 'ebook', label: 'ลิงก์ผังแนวทางดำเนินงาน' },
-    { key: 'other_docs', label: 'ลิงก์เอกสารที่เกี่ยวข้อง' },
     { key: 'evaluation', label: 'ลิงก์แบบประเมิน' },
     { key: 'gallery', label: 'ลิงก์คลังภาพ (Gallery)' },
     { key: 'qa', label: 'ลิงก์ Smart Q&A' },
@@ -712,7 +710,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
                                 onClick={() => window.open(currentValue, '_blank')}
                                 className="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-colors flex items-center gap-1.5"
                               >
-                                ทดสอบลิงก์
+                                ลิงค์เอกสาร
                               </button>
                             ) : (
                               <span className="text-sm font-medium text-slate-400">
@@ -1253,7 +1251,7 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
                       <h4 className="font-bold text-slate-800 text-sm">{doc.name}</h4>
                       <div className="flex items-center gap-3 mt-1">
                         <span className="text-xs text-slate-500 font-medium">{doc.date || 'ไม่ระบุวันที่'}</span>
-                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 font-semibold hover:underline">ทดสอบลิงก์</a>
+                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 font-semibold hover:underline">ลิงค์เอกสาร</a>
                       </div>
                     </div>
                   </div>
@@ -1460,7 +1458,7 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
                       <h4 className="font-bold text-slate-800 text-sm">{doc.name}</h4>
                       <div className="flex items-center gap-3 mt-1">
                         <span className="text-xs text-slate-500 font-medium">{doc.date || 'ไม่ระบุวันที่'}</span>
-                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 font-semibold hover:underline">ทดสอบลิงก์</a>
+                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 font-semibold hover:underline">ลิงค์เอกสาร</a>
                       </div>
                     </div>
                   </div>
@@ -1665,7 +1663,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
                       <h4 className="font-bold text-slate-800 text-sm">{doc.name}</h4>
                       <div className="flex items-center gap-3 mt-1">
                         <span className="text-xs text-slate-500 font-medium">{doc.date || 'ไม่ระบุวันที่'}</span>
-                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 font-semibold hover:underline">ทดสอบลิงก์</a>
+                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 font-semibold hover:underline">ลิงค์เอกสาร</a>
                       </div>
                     </div>
                   </div>

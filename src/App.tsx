@@ -7,7 +7,8 @@ import AdminView from './views/AdminView';
 import CalendarView from './views/CalendarView';
 import { ViewType, SessionItem, ProjectItem, UserItem, CalendarEvent, UserRole, QAQuestion } from './types';
 import { db } from './lib/firebase';
-import { collection, onSnapshot, doc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, onSnapshot, doc, setDoc, deleteDoc, getDocs } from 'firebase/firestore';
+import { initialProjects, initialSessions, initialQA, initialEvents, initialUsers } from './lib/seedData';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('home');
@@ -19,27 +20,77 @@ export default function App() {
   const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   const [users, setUsers] = useState<UserItem[]>([]);
+  const [isInitializing, setIsInitializing] = useState<boolean>(true);
 
+  // Initialize and listen to Firestore
   useEffect(() => {
+    let isMounted = true;
+
+    async function checkAndSeed() {
+      try {
+        const projectsSnap = await getDocs(collection(db, 'projects'));
+        if (projectsSnap.empty && isMounted) {
+          console.log("Seeding initial data to Firestore...");
+          // Seed projects
+          for (const p of initialProjects) {
+            await setDoc(doc(db, 'projects', p.id), p);
+          }
+          // Seed sessions
+          for (const s of initialSessions) {
+            await setDoc(doc(db, 'sessions', s.id), s);
+          }
+          // Seed Q&A
+          for (const q of initialQA) {
+            await setDoc(doc(db, 'qa_questions', String(q.id)), q);
+          }
+          // Seed Events
+          for (const e of initialEvents) {
+            await setDoc(doc(db, 'calendar_events', e.id), e);
+          }
+          // Seed Users
+          for (const u of initialUsers) {
+            await setDoc(doc(db, 'users_management', String(u.id)), u);
+          }
+        }
+      } catch (err) {
+        console.error("Error checking or seeding Firestore:", err);
+      } finally {
+        if (isMounted) {
+          setIsInitializing(false);
+        }
+      }
+    }
+
+    checkAndSeed();
+
     const unsubProjects = onSnapshot(collection(db, 'projects'), (snap) => {
-      setProjects(snap.docs.map(d => ({ id: d.id, ...d.data() } as ProjectItem)));
+      const list = snap.docs.map(d => ({ id: d.id, ...d.data() } as ProjectItem));
+      setProjects(list);
+      setIsInitializing(false);
+    }, (err) => {
+      console.error("Projects snapshot error:", err);
+      setIsInitializing(false);
     });
+
     const unsubSessions = onSnapshot(collection(db, 'sessions'), (snap) => {
       setSessions(snap.docs.map(d => ({ id: d.id, ...d.data() } as SessionItem)));
     });
+
     const unsubQA = onSnapshot(collection(db, 'qa_questions'), (snap) => {
-      // Sort desc by time or ID for simplicity
       const qas = snap.docs.map(d => ({ ...d.data(), id: Number(d.id) } as QAQuestion));
       setQaQuestions(qas.sort((a,b) => b.id - a.id));
     });
+
     const unsubEvents = onSnapshot(collection(db, 'calendar_events'), (snap) => {
       setCalendarEvents(snap.docs.map(d => ({ id: d.id, ...d.data() } as CalendarEvent)));
     });
+
     const unsubUsers = onSnapshot(collection(db, 'users_management'), (snap) => {
       setUsers(snap.docs.map(d => ({ ...d.data(), id: Number(d.id) } as UserItem)));
     });
 
     return () => {
+      isMounted = false;
       unsubProjects();
       unsubSessions();
       unsubQA();
@@ -48,26 +99,25 @@ export default function App() {
     };
   }, []);
 
-
   // Sync wrappers
   const makeFirebaseSetter = (collectionName: string, localState: any[]) => {
     return (action: any) => {
       const newState = typeof action === 'function' ? action(localState) : action;
       
       // Calculate diffs
-      const oldMap = new Map(localState.map(item => [String(item.id), item]));
-      const newMap = new Map(newState.map((item: any) => [String(item.id), item]));
+      const oldMap = new Map<string, any>(localState.map(item => [String(item.id), item]));
+      const newMap = new Map<string, any>(newState.map((item: any) => [String(item.id), item]));
       
       // Deleted
-      oldMap.forEach((_, id) => {
+      oldMap.forEach((_, id: string) => {
         if (!newMap.has(id)) {
           console.log(`Deleting ${id} from ${collectionName}`);
-          deleteDoc(doc(db, collectionName, id as string)).catch(err => console.error("Delete failed", err));
+          deleteDoc(doc(db, collectionName, id)).catch(err => console.error("Delete failed", err));
         }
       });
       
       // Added or Updated
-      newMap.forEach((item, id) => {
+      newMap.forEach((item: any, id: string) => {
         const oldItem = oldMap.get(id);
         if (!oldItem || JSON.stringify(oldItem) !== JSON.stringify(item)) {
           setDoc(doc(db, collectionName, id), item);
@@ -76,7 +126,7 @@ export default function App() {
     };
   };
 
-  const activeProject = projects.find(p => p.isActive);
+  const activeProject = projects.find(p => p.isActive) || projects[0];
 
   const renderView = () => {
     switch (currentView) {
@@ -104,8 +154,20 @@ export default function App() {
       default: return <HomeView setCurrentView={setCurrentView} sessions={sessions} projects={projects} />;
     }
   };
-  if(projects.length === 0) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+
+  if (isInitializing && projects.length === 0) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-slate-900 text-white gap-4">
+        <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-2xl font-black shadow-lg shadow-blue-500/30 animate-pulse">
+          M
+        </div>
+        <div className="text-center">
+          <h2 className="font-bold text-lg text-slate-100">MOE Coordination Hub</h2>
+          <p className="text-sm text-slate-400 mt-1">กำลังเชื่อมต่อฐานข้อมูล Firebase Firestore...</p>
+        </div>
+        <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mt-2"></div>
+      </div>
+    );
   }
 
   return (
