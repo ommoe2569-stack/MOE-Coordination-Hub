@@ -100,7 +100,7 @@ export default function Sidebar({ currentView, setCurrentView, activeProject, pe
             {isDataOpen && (
               <div className="mt-1 space-y-1">
                 {isFeatureEnabled('download') && <NavItem icon={FileText} label="ผังที่นั่ง-รายชื่อ" view="download" indent />}
-                {isFeatureEnabled('ebook') && <NavItem icon={BookOpen} label="ผังแนวทางดำเนินงาน" view="ebook" indent />}
+                {isFeatureEnabled('ebook') && <NavItem icon={BookOpen} label="ผังแนวทางการดำเนินงาน" view="ebook" indent />}
                 {isFeatureEnabled('other_docs') && <NavItem icon={Files} label="เอกสารที่เกี่ยวข้อง" view="other_docs" indent />}
               </div>
             )}

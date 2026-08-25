@@ -48,7 +48,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
   const [addingToDate, setAddingToDate] = useState<string | null>(null);
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
   const [eventToDelete, setEventToDelete] = useState<CalendarEvent | null>(null);
-  const [newProject, setNewProject] = useState<{name: string, startTime: string, location: string, description: string, category: 'meeting' | 'training' | 'social' | 'other', endDate: string}>({ name: '', startTime: '', location: '', description: '', category: 'meeting', endDate: '' });
+  const [newProject, setNewProject] = useState<{name: string, startTime: string, endTime: string, location: string, description: string, category: 'meeting' | 'training' | 'social' | 'other', endDate: string}>({ name: '', startTime: '', endTime: '', location: '', description: '', category: 'meeting', endDate: '' });
   
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -257,7 +257,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                         </div>
                       </div>
                       <div className={`flex items-center gap-1 ${catConfig.icon} mb-0.5 truncate`}>
-                        <Clock size={10} className="shrink-0" /> {project.startTime} น.
+                        <Clock size={10} className="shrink-0" /> {project.startTime}{project.endTime ? `-${project.endTime}` : ''} น.
                       </div>
                       {project.location && (
                         <div className={`flex items-center gap-1 ${catConfig.icon} truncate`}>
@@ -292,6 +292,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                           setNewProject({
                             name: selectedProject.name,
                             startTime: selectedProject.startTime,
+                            endTime: selectedProject.endTime || '',
                             location: selectedProject.location || '',
                             description: selectedProject.description || '',
                             category: selectedProject.category || 'meeting',
@@ -333,7 +334,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                   </div>
                   <div className="flex-1">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">เวลา</p>
-                    <p className="font-semibold text-slate-700">{selectedProject.startTime} น.</p>
+                    <p className="font-semibold text-slate-700">{selectedProject.startTime}{selectedProject.endTime ? ` - ${selectedProject.endTime}` : ''} น.</p>
                   </div>
                 </div>
                 
@@ -382,7 +383,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                  <CalendarIcon size={24} />
               </div>
               <button 
-                onClick={() => { setAddingToDate(null); setEditingEvent(null); setNewProject({ name: '', startTime: '', location: '', description: '', category: 'meeting', endDate: '' }); }}
+                onClick={() => { setAddingToDate(null); setEditingEvent(null); setNewProject({ name: '', startTime: '', endTime: '', location: '', description: '', category: 'meeting', endDate: '' }); }}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 transition-colors"
               >
                 <X size={18} />
@@ -390,12 +391,12 @@ export default function CalendarView({ events, setEvents, projects = [], session
             </div>
             
             <div className="p-6">
-              <input 
-                type="text"
+              <textarea 
+                rows={2}
                 placeholder="ชื่อโครงการ / กิจกรรม"
                 value={newProject.name}
                 onChange={(e) => setNewProject({...newProject, name: e.target.value})}
-                className="w-full text-xl font-extrabold text-slate-800 mb-4 leading-tight border-none focus:ring-0 px-0 placeholder:text-slate-300 bg-transparent"
+                className="w-full text-xl font-extrabold text-slate-800 mb-4 leading-tight border-none focus:ring-0 px-0 placeholder:text-slate-300 bg-transparent resize-none"
                 autoFocus
               />
               
@@ -406,11 +407,20 @@ export default function CalendarView({ events, setEvents, projects = [], session
                   </div>
                   <div className="flex-1 grid grid-cols-3 gap-2">
                     <div className="flex-1">
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">เวลา</p>
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">เริ่มตั้งแต่เวลา</p>
                       <input 
                         type="time"
                         value={newProject.startTime}
                         onChange={(e) => setNewProject({...newProject, startTime: e.target.value})}
+                        className="w-full font-semibold text-slate-700 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">ถึงเวลา</p>
+                      <input 
+                        type="time"
+                        value={newProject.endTime}
+                        onChange={(e) => setNewProject({...newProject, endTime: e.target.value})}
                         className="w-full font-semibold text-slate-700 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
                       />
                     </div>
@@ -477,6 +487,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                         ...e,
                         name: newProject.name,
                         startTime: newProject.startTime || '08:00',
+                        endTime: newProject.endTime || '',
                         location: newProject.location,
                         description: newProject.description,
                         category: newProject.category,
@@ -489,6 +500,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                         date: addingToDate,
                         endDate: newProject.endDate || '',
                         startTime: newProject.startTime || '08:00',
+                        endTime: newProject.endTime || '',
                         location: newProject.location,
                         description: newProject.description,
                         category: newProject.category
@@ -498,7 +510,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                   }
                   setAddingToDate(null);
                   setEditingEvent(null);
-                  setNewProject({ name: '', startTime: '', location: '', description: '', category: 'meeting', endDate: '' });
+                  setNewProject({ name: '', startTime: '', endTime: '', location: '', description: '', category: 'meeting', endDate: '' });
                 }}
                 className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors shadow-sm shadow-blue-200"
               >
@@ -556,7 +568,7 @@ export default function CalendarView({ events, setEvents, projects = [], session
                   <td className="p-3 text-center" style={{ border: '1px solid #cbd5e1' }}>{index + 1}</td>
                   <td className="p-3 text-center" style={{ border: '1px solid #cbd5e1' }}>
                     <div className="font-bold">{formatDateThai(e.date)}{e.endDate ? ` - ${formatDateThai(e.endDate)}` : ''}</div>
-                    <div style={{ color: '#475569', marginTop: '4px' }}>{e.startTime} น.</div>
+                    <div style={{ color: '#475569', marginTop: '4px' }}>{e.startTime}{e.endTime ? `-${e.endTime}` : ''} น.</div>
                   </td>
                   <td className="p-3 font-medium" style={{ border: '1px solid #cbd5e1' }}>{e.name}</td>
                   <td className="p-3" style={{ color: '#475569', border: '1px solid #cbd5e1' }}>{e.location || '-'}</td>

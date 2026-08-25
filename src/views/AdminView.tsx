@@ -138,7 +138,7 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
             className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'ebook' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
           >
             <BookOpen size={18} />
-            จัดการผังแนวทางดำเนินงาน
+            จัดการผังแนวทางการดำเนินงาน
           </button>
         </div>
 
@@ -633,7 +633,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
     { key: 'calendar', label: 'ปฏิทินกิจกรรม' },
     { key: 'register', label: 'แบบแจ้งรายชื่อ' },
     { key: 'download', label: 'ผังที่นั่ง-รายชื่อ' },
-    { key: 'ebook', label: 'ผังแนวทาง' },
+    { key: 'ebook', label: 'ผังแนวทางการดำเนินงาน' },
     { key: 'other_docs', label: 'เอกสารที่เกี่ยวข้อง' },
     { key: 'qa', label: 'Q&A' },
     { key: 'gallery', label: 'แกลเลอรี่' },
@@ -1547,8 +1547,8 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
     <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการผังแนวทางดำเนินงาน</h3>
-          <p className="text-sm text-slate-500 font-medium">เพิ่มหรือแก้ไขลิงก์ไฟล์ผังแนวทางดำเนินงานแยกตามโครงการ</p>
+          <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการผังแนวทางการดำเนินงาน</h3>
+          <p className="text-sm text-slate-500 font-medium">เพิ่มหรือแก้ไขลิงก์ไฟล์ผังแนวทางการดำเนินงานแยกตามโครงการ</p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
           <SearchableProjectDropdown
@@ -1561,7 +1561,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
             }}
           />
           <button onClick={openAddForm} className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-100 px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-colors shrink-0">
-            <Plus size={16} /> เพิ่มผังแนวทางดำเนินงาน
+            <Plus size={16} /> เพิ่มผังแนวทางการดำเนินงาน
           </button>
         </div>
       </div>
@@ -1601,15 +1601,15 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
         <>
           {isFormOpen && (
             <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-300">
-              <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขผังแนวทางดำเนินงาน' : 'เพิ่มผังแนวทางดำเนินงานใหม่'}</h4>
+              <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขผังแนวทางการดำเนินงาน' : 'เพิ่มผังแนวทางการดำเนินงานใหม่'}</h4>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-2">ชื่อผังแนวทางดำเนินงาน <span className="text-indigo-500">*</span></label>
+                  <label className="block text-xs font-bold text-slate-700 mb-2">ชื่อผังแนวทางการดำเนินงาน <span className="text-indigo-500">*</span></label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="ระบุชื่อผังแนวทางดำเนินงาน..."
+                    placeholder="ระบุชื่อผังแนวทางการดำเนินงาน..."
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
@@ -1650,7 +1650,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
           <div className="space-y-3">
             {ebook_documents.length === 0 && !isFormOpen ? (
               <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-300 rounded-2xl">
-                ยังไม่มีข้อมูลผังแนวทางดำเนินงานสำหรับโครงการนี้
+                ยังไม่มีข้อมูลผังแนวทางการดำเนินงานสำหรับโครงการนี้
               </div>
             ) : (
               ebook_documents.map((doc) => (

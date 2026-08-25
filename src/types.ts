@@ -87,6 +87,7 @@ export interface CalendarEvent {
   date: string;
   endDate?: string;
   startTime: string;
+  endTime?: string;
   location: string;
   description: string;
   category?: 'meeting' | 'training' | 'social' | 'other';

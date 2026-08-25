@@ -16,7 +16,7 @@ export default function HomeView({ setCurrentView, sessions, projects }: HomeVie
     const quickAccessButtons = [
     { icon: UserPlus, label: 'แบบแจ้งรายชื่อ', view: 'register' as ViewType, color: 'text-pink-700', bg: 'bg-gradient-to-br from-pink-200 to-rose-300', hover: 'hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-1' },
     { icon: Download, label: 'ผังที่นั่ง-รายชื่อ', view: 'download' as ViewType, color: 'text-blue-700', bg: 'bg-gradient-to-br from-blue-200 to-indigo-300', hover: 'hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-1' },
-    { icon: BookOpen, label: 'ผังแนวทาง', view: 'ebook' as ViewType, color: 'text-purple-700', bg: 'bg-gradient-to-br from-purple-200 to-fuchsia-300', hover: 'hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-1' },
+    { icon: BookOpen, label: 'ผังแนวทางการดำเนินงาน', view: 'ebook' as ViewType, color: 'text-purple-700', bg: 'bg-gradient-to-br from-purple-200 to-fuchsia-300', hover: 'hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-1' },
     { icon: Files, label: 'เอกสารที่เกี่ยวข้อง', view: 'other_docs' as ViewType, color: 'text-teal-700', bg: 'bg-gradient-to-br from-teal-200 to-emerald-300', hover: 'hover:shadow-lg hover:shadow-teal-500/30 hover:-translate-y-1' },
     { icon: Phone, label: 'Contact', view: 'contact' as ViewType, color: 'text-indigo-800', bg: 'bg-gradient-to-br from-indigo-200 to-blue-300', hover: 'hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-1' },
     { icon: HelpCircle, label: 'Q&A', view: 'qa' as ViewType, color: 'text-amber-800', bg: 'bg-gradient-to-br from-amber-200 to-orange-300', hover: 'hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-1' },

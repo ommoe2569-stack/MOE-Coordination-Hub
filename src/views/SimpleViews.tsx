@@ -40,7 +40,7 @@ export function EbookView({ activeProject }: { activeProject?: ProjectItem }) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-2xl font-extrabold text-[#1e1b4b] dark:text-white mb-6">ผังแนวทางดำเนินงาน</h2>
+      <h2 className="text-2xl font-extrabold text-[#1e1b4b] dark:text-white mb-6">ผังแนวทางการดำเนินงาน</h2>
       <div className="space-y-4">
         {documents.length > 0 ? (
           documents.map((doc) => (
@@ -68,7 +68,7 @@ export function EbookView({ activeProject }: { activeProject?: ProjectItem }) {
             <div className="w-24 h-24 bg-white text-slate-300 rounded-full flex items-center justify-center mb-4">
               <BookOpen size={40} />
             </div>
-            <p className="text-slate-400 font-semibold">ยังไม่มีข้อมูลผังแนวทางดำเนินงานในขณะนี้</p>
+            <p className="text-slate-400 font-semibold">ยังไม่มีข้อมูลผังแนวทางการดำเนินงานในขณะนี้</p>
           </div>
         )}
       </div>
