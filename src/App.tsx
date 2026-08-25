@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import HomeView from './views/HomeView';
 import { RegisterView, EbookView, ContactView, EvaluationView } from './views/SimpleViews';
-import { DownloadView, OtherDocsView, SmartQAView, GalleryView } from './views/DataViews';
+import { DownloadView, OtherDocsView, SmartQAView, GalleryView, VideoView } from './views/DataViews';
 import AdminView from './views/AdminView';
 import CalendarView from './views/CalendarView';
 import { ViewType, SessionItem, ProjectItem, UserItem, CalendarEvent, UserRole, QAQuestion } from './types';
@@ -137,7 +137,8 @@ export default function App() {
       case 'download': return <DownloadView activeProject={activeProject} />;
       case 'ebook': return <EbookView activeProject={activeProject} />;
       case 'other_docs': return <OtherDocsView activeProject={activeProject} />;
-      case 'gallery': return <GalleryView activeProject={activeProject} />;
+      case 'gallery': return <GalleryView activeProject={activeProject} isAdmin={userRole === 'admin' || userRole === 'staff'} />;
+      case 'video': return <VideoView activeProject={activeProject} isAdmin={userRole === 'admin' || userRole === 'staff'} />;
       case 'contact': return <ContactView activeProject={activeProject} isAdmin={userRole === 'admin' || userRole === 'staff'} />;
       case 'qa': return <SmartQAView activeProject={activeProject} isAdmin={userRole === 'admin'} questions={qaQuestions} setQuestions={setQaQuestions} />;
       case 'evaluation': return <EvaluationView activeProject={activeProject} />;

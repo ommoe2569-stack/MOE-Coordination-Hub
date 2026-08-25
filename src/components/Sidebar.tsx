@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Home, UserPlus, Folder, FileText, BookOpen, Users, 
-  MessageSquare, Image as ImageIcon, Phone, HelpCircle, 
+  MessageSquare, Image as ImageIcon, Phone, HelpCircle, Video, 
   ClipboardList, Moon, Sun, Calendar, Lock, ChevronDown, ChevronUp
 , Files } from 'lucide-react';
 import { ViewType, ProjectItem } from '../types';
@@ -107,7 +107,7 @@ export default function Sidebar({ currentView, setCurrentView, activeProject, pe
           </div>
         )}
 
-        {isFeatureEnabled('gallery') && (
+        {(isFeatureEnabled('gallery') || isFeatureEnabled('video')) && (
           <div className="pt-2">
             <button 
               onClick={() => setIsCommunityOpen(!isCommunityOpen)}
@@ -123,6 +123,7 @@ export default function Sidebar({ currentView, setCurrentView, activeProject, pe
             {isCommunityOpen && (
               <div className="mt-1 space-y-1">
                 {isFeatureEnabled('gallery') && <NavItem icon={ImageIcon} label="Photo Gallery" view="gallery" indent />}
+                {isFeatureEnabled('video') && <NavItem icon={Video} label="Video archive" view="video" indent />}
               </div>
             )}
           </div>

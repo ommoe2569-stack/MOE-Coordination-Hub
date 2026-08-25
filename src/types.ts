@@ -9,6 +9,7 @@ export type ViewType =
   | 'ebook' 
   | 'social' 
   | 'gallery' 
+  | 'video'
   | 'contact' 
   | 'qa' 
   | 'evaluation' 
@@ -51,6 +52,7 @@ export interface ProjectItem {
     ebook?: string;
     social?: string;
     gallery?: string;
+    video?: string;
     contact?: string;
     evaluation?: string;
     manual?: string;
@@ -77,6 +79,20 @@ export interface ProjectItem {
     date: string;
     endDate?: string;
     url: string;
+  }[];
+  videos?: {
+    id: string;
+    title: string;
+    description?: string;
+    url: string;
+    dateAdded: string;
+  }[];
+  photos?: {
+    id: string;
+    title: string;
+    description?: string;
+    url: string;
+    dateAdded: string;
   }[];
 }
 

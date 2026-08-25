@@ -637,6 +637,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
     { key: 'other_docs', label: 'เอกสารที่เกี่ยวข้อง' },
     { key: 'qa', label: 'Q&A' },
     { key: 'gallery', label: 'แกลเลอรี่' },
+    { key: 'video', label: 'คลังวิดีโอ (Video)' },
     { key: 'evaluation', label: 'ประเมินผล' },
     { key: 'contact', label: 'Contact' },
   ];
@@ -645,6 +646,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
     { key: 'register', label: 'ลิงก์แบบแจ้งรายชื่อ (Google Sheet)' },
     { key: 'evaluation', label: 'ลิงก์แบบประเมิน' },
     { key: 'gallery', label: 'ลิงก์คลังภาพ (Gallery)' },
+    { key: 'video', label: 'ลิงก์คลังวิดีโอ (Video)' },
     { key: 'qa', label: 'ลิงก์ Smart Q&A' },
   ];
 

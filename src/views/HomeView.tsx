@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   UserPlus, Download, BookOpen, MessageSquare, HelpCircle, 
-  Image as ImageIcon, ClipboardList, Phone, FileQuestion, Calendar, MapPin, Clock, Users
+  Image as ImageIcon, Video, ClipboardList, Phone, FileQuestion, Calendar, MapPin, Clock, Users
 } from 'lucide-react';
 import { ViewType, SessionItem, ProjectItem } from '../types';
 import { Files } from 'lucide-react';
@@ -21,6 +21,7 @@ export default function HomeView({ setCurrentView, sessions, projects }: HomeVie
     { icon: Phone, label: 'Contact', view: 'contact' as ViewType, color: 'text-indigo-800', bg: 'bg-gradient-to-br from-indigo-200 to-blue-300', hover: 'hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-1' },
     { icon: HelpCircle, label: 'Q&A', view: 'qa' as ViewType, color: 'text-amber-800', bg: 'bg-gradient-to-br from-amber-200 to-orange-300', hover: 'hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-1' },
     { icon: ImageIcon, label: 'แกลเลอรี่', view: 'gallery' as ViewType, color: 'text-rose-700', bg: 'bg-gradient-to-br from-rose-200 to-red-300', hover: 'hover:shadow-lg hover:shadow-rose-500/30 hover:-translate-y-1' },
+    { icon: Video, label: 'คลังวิดีโอ (Video)', view: 'video' as ViewType, color: 'text-red-700', bg: 'bg-gradient-to-br from-red-200 to-rose-300', hover: 'hover:shadow-lg hover:shadow-red-500/30 hover:-translate-y-1' },
     { icon: ClipboardList, label: 'ประเมินผล', view: 'evaluation' as ViewType, color: 'text-cyan-800', bg: 'bg-gradient-to-br from-cyan-200 to-blue-300', hover: 'hover:shadow-lg hover:shadow-cyan-500/30 hover:-translate-y-1' },
   ];
 
