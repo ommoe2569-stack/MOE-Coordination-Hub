@@ -4,6 +4,8 @@ import HomeView from './views/HomeView';
 import { RegisterView, EbookView, ContactView, EvaluationView } from './views/SimpleViews';
 import { DownloadView, OtherDocsView, SmartQAView, GalleryView, VideoView } from './views/DataViews';
 import AdminView from './views/AdminView';
+import LandingView from './views/LandingView';
+import ProjectSwitcher from './components/ProjectSwitcher';
 import CalendarView from './views/CalendarView';
 import { ViewType, SessionItem, ProjectItem, UserItem, CalendarEvent, UserRole, QAQuestion } from './types';
 import { db } from './lib/firebase';
@@ -12,6 +14,7 @@ import { initialProjects, initialSessions, initialQA, initialEvents, initialUser
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('home');
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole>('guest');
   
   const [qaQuestions, setQaQuestions] = useState<QAQuestion[]>([]);
@@ -126,13 +129,18 @@ export default function App() {
     };
   };
 
-  const activeProject = projects.find(p => p.isActive) || projects[0];
+  const activeProjects = projects.filter(p => p.isActive);
+  const activeProject = selectedProjectId 
+    ? activeProjects.find(p => p.id === selectedProjectId) || activeProjects[0] 
+    : (activeProjects.length === 1 ? activeProjects[0] : undefined);
+    
+  const shouldShowLanding = activeProjects.length > 1 && !activeProject && currentView !== 'admin';
 
   const renderView = () => {
     switch (currentView) {
       case 'calendar':
-        return <CalendarView events={calendarEvents} setEvents={makeFirebaseSetter('calendar_events', calendarEvents)} projects={projects} sessions={sessions} setProjects={makeFirebaseSetter('projects', projects)} setSessions={makeFirebaseSetter('sessions', sessions)} />;
-      case 'home': return <HomeView setCurrentView={setCurrentView} sessions={sessions} projects={projects} />;
+        return <CalendarView events={calendarEvents} setEvents={makeFirebaseSetter('calendar_events', calendarEvents)} projects={projects} sessions={sessions} setProjects={makeFirebaseSetter('projects', projects)} setSessions={makeFirebaseSetter('sessions', sessions)} activeProject={activeProject} />;
+      case 'home': return <HomeView setCurrentView={setCurrentView} sessions={sessions} projects={projects} activeProject={activeProject} />;
       case 'register': return <RegisterView activeProject={activeProject} />;
       case 'download': return <DownloadView activeProject={activeProject} />;
       case 'ebook': return <EbookView activeProject={activeProject} />;
@@ -172,25 +180,31 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen print:h-auto bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 font-sans text-slate-800 dark:text-slate-100 overflow-hidden print:overflow-visible print:bg-white selection:bg-blue-200 dark:selection:bg-blue-800">
+    <div className="flex h-screen print:h-auto bg-[#F0F4F8] dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 overflow-hidden print:overflow-visible print:bg-white selection:bg-blue-200 dark:selection:bg-blue-800">
       <div className="print:hidden">
-        <Sidebar currentView={currentView} setCurrentView={setCurrentView} activeProject={activeProject} pendingQaCount={userRole === 'admin' ? pendingQaCount : 0} />
+        <Sidebar currentView={currentView} setCurrentView={setCurrentView} activeProject={activeProject} pendingQaCount={userRole === 'admin' ? pendingQaCount : 0} activeProjects={activeProjects} onSelectProject={setSelectedProjectId} />
       </div>
       
-      <main className={`flex-1 overflow-y-auto print:overflow-visible p-4 md:p-8 print:p-0 w-full flex flex-col ${currentView !== "admin" ? "bg-white dark:bg-slate-950" : ""}`}>
+      <main className="flex-1 overflow-y-auto print:overflow-visible p-4 md:p-8 print:p-0 w-full flex flex-col">
         {/* Mobile Header */}
-        <div className="md:hidden print:hidden flex items-center gap-4 mb-6 bg-slate-100 p-4 rounded-2xl shadow-sm border border-slate-200">
-          <div className="w-12 h-12 from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md">
+        <div className="md:hidden print:hidden flex items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md shrink-0">
             M
           </div>
-          <div className="flex-1 min-w-0">
-            <h1 className="font-bold text-blue-900 text-sm sm:text-base tracking-tight truncate">MOE Coordination Hub</h1>
-            <p className="text-[13px] sm:text-[14px] text-slate-500 font-medium truncate">สำนักงานรัฐมนตรี ศธ.</p>
-          </div>
+          <ProjectSwitcher 
+            activeProjects={activeProjects} 
+            selectedProject={activeProject} 
+            onSelect={setSelectedProjectId} 
+            isMobile={true} 
+          />
         </div>
 
         <div className="flex-1 max-w-6xl mx-auto w-full print:max-w-none print:w-full">
-          {renderView()}
+          {shouldShowLanding ? (
+            <LandingView activeProjects={activeProjects} onSelectProject={setSelectedProjectId} />
+          ) : (
+            renderView()
+          )}
         </div>
       </main>
     </div>

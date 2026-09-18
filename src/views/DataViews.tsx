@@ -277,6 +277,7 @@ export function GalleryView({ activeProject, isAdmin = false }: { activeProject?
   const [newTitle, setNewTitle] = React.useState('');
   const [newUrl, setNewUrl] = React.useState('');
   const [newDesc, setNewDesc] = React.useState('');
+  const [lightboxPhoto, setLightboxPhoto] = React.useState<{url: string, title: string, description?: string} | null>(null);
 
   const handleAddPhoto = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -411,7 +412,7 @@ export function GalleryView({ activeProject, isAdmin = false }: { activeProject?
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {photos.map((photo) => (
             <div key={photo.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
-              <div className="w-full aspect-video bg-slate-100 relative group cursor-pointer" onClick={() => window.open(photo.url, '_blank')}>
+              <div className="w-full aspect-video bg-slate-100 relative group cursor-pointer" onClick={() => setLightboxPhoto(photo)}>
                 <img 
                   src={photo.url} 
                   alt={photo.title} 
@@ -467,6 +468,46 @@ export function GalleryView({ activeProject, isAdmin = false }: { activeProject?
             <p className="text-slate-500 font-medium">เพิ่มลิงก์รูปภาพเพื่อให้ผู้ร่วมโครงการรับชม</p>
           </div>
         )
+      )}
+
+      {/* Lightbox Modal */}
+      {lightboxPhoto && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 sm:p-8"
+          onClick={() => setLightboxPhoto(null)}
+        >
+          <button 
+            onClick={() => setLightboxPhoto(null)}
+            className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-sm transition-colors"
+          >
+            <X size={24} />
+          </button>
+          
+          <div 
+            className="max-w-5xl w-full max-h-full flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative flex-1 min-h-0 flex items-center justify-center">
+              <img 
+                src={lightboxPhoto.url} 
+                alt={lightboxPhoto.title}
+                className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null; 
+                  target.src = 'https://placehold.co/800x600/1e293b/94a3b8?text=Image+Not+Found';
+                }}
+              />
+            </div>
+            
+            <div className="bg-black/50 backdrop-blur-md p-6 mt-4 rounded-xl text-white">
+              <h3 className="text-xl font-bold mb-2">{lightboxPhoto.title}</h3>
+              {lightboxPhoto.description && (
+                <p className="text-slate-300">{lightboxPhoto.description}</p>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

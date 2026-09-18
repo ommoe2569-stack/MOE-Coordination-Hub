@@ -5,15 +5,18 @@ import {
   ClipboardList, Moon, Sun, Calendar, Lock, ChevronDown, ChevronUp
 , Files } from 'lucide-react';
 import { ViewType, ProjectItem } from '../types';
+import ProjectSwitcher from './ProjectSwitcher';
 
 interface SidebarProps {
   currentView: ViewType;
   setCurrentView: (view: ViewType) => void;
   activeProject?: ProjectItem;
+  activeProjects?: ProjectItem[];
+  onSelectProject?: (id: string) => void;
   pendingQaCount?: number;
 }
 
-export default function Sidebar({ currentView, setCurrentView, activeProject, pendingQaCount = 0 }: SidebarProps) {
+export default function Sidebar({ currentView, setCurrentView, activeProject, pendingQaCount = 0, activeProjects = [], onSelectProject }: SidebarProps) {
   const [isDataOpen, setIsDataOpen] = useState(true);
   const [isCommunityOpen, setIsCommunityOpen] = useState(true);
 
@@ -62,16 +65,24 @@ export default function Sidebar({ currentView, setCurrentView, activeProject, pe
   };
 
   return (
-    <aside className="w-72 flex flex-col h-screen bg-slate-100 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 overflow-y-auto hidden md:flex sticky top-0 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+    <aside className="w-72 flex flex-col h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 overflow-y-auto hidden md:flex sticky top-0 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
       <div className="p-6 pb-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md">
             M
           </div>
-          <div className="flex-1 min-w-0 pr-2">
-            <h1 className="font-bold text-slate-800 dark:text-slate-100 leading-tight text-[13px] xl:text-sm tracking-tight truncate">MOE Coordination Hub</h1>
-            <p className="text-[12px] xl:text-[13px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 truncate">สำนักงานรัฐมนตรี ศธ.</p>
-          </div>
+          {onSelectProject ? (
+            <ProjectSwitcher 
+              activeProjects={activeProjects} 
+              selectedProject={activeProject} 
+              onSelect={onSelectProject} 
+            />
+          ) : (
+            <div className="flex-1 min-w-0 pr-2">
+              <h1 className="font-bold text-slate-800 dark:text-slate-100 leading-tight text-[13px] xl:text-sm tracking-tight truncate">MOE Coordination Hub</h1>
+              <p className="text-[12px] xl:text-[13px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 truncate">สำนักงานรัฐมนตรี ศธ.</p>
+            </div>
+          )}
         </div>
       </div>
 

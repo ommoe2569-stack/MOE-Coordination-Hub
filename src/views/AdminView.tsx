@@ -35,7 +35,7 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
     return (
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-center mt-12">
-          <div className="bg-slate-200 rounded-3xl p-10 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300 w-full max-w-md">
+          <div className="bg-white rounded-3xl p-10 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 w-full max-w-md">
             <div className="flex flex-col items-center text-center mb-8">
               <div className="w-16 h-16 bg-slate-800 text-white rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-slate-200">
                 <Lock size={28} strokeWidth={2} />
@@ -50,7 +50,7 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="รหัสผ่าน"
-                  className="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-indigo-500 transition-colors bg-slate-100 font-medium text-center tracking-widest text-slate-900 dark:text-slate-900"
+                  className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-indigo-500 transition-colors bg-slate-100 font-medium text-center tracking-widest text-slate-900 dark:text-slate-900"
                 />
                 {error && <p className="text-red-500 text-xs mt-2 font-medium">{error}</p>}
               </div>
@@ -69,7 +69,7 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Admin Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-200 p-6 rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300 gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-6 rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 gap-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-blue-700 text-white rounded-xl flex items-center justify-center shadow-md">
             <Shield size={24} />
@@ -81,7 +81,7 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
         </div>
         <button 
           onClick={() => { setUserRole('guest'); setPassword(''); }}
-          className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors bg-slate-100 hover:bg-indigo-50 px-4 py-2.5 rounded-xl font-bold text-sm border border-slate-300 hover:border-indigo-100"
+          className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors bg-slate-100 hover:bg-indigo-50 px-4 py-2.5 rounded-xl font-bold text-sm border border-slate-200 hover:border-indigo-100"
         >
           <LogOut size={16} />
           ออกจากระบบ
@@ -93,49 +93,49 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
         <div className="md:col-span-1 space-y-2">
           <button 
             onClick={() => setActiveTab('projects')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'projects' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'projects' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <Briefcase size={18} />
             จัดการโครงการ
           </button>
           <button 
             onClick={() => setActiveTab('users')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <Users size={18} />
             กำหนดสิทธิ์ผู้ใช้งาน
           </button>
           <button 
             onClick={() => setActiveTab('sessions')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'sessions' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'sessions' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <Calendar size={18} />
             การกำหนด Session
           </button>
           <button 
             onClick={() => setActiveTab('menus')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'menus' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'menus' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <LayoutDashboard size={18} />
             จัดการระบบ/เมนู
           </button>
           <button 
             onClick={() => setActiveTab('documents')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'documents' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'documents' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <FileText size={18} />
             จัดการผังที่นั่ง-รายชื่อ
           </button>
           <button 
             onClick={() => setActiveTab('other_documents')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'other_documents' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'other_documents' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <Files size={18} />
             จัดการเอกสารที่เกี่ยวข้อง
           </button>
           <button 
             onClick={() => setActiveTab('ebook')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'ebook' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-200 text-slate-600 hover:bg-slate-100 border border-slate-300'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-bold text-sm ${activeTab === 'ebook' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
           >
             <BookOpen size={18} />
             จัดการผังแนวทางการดำเนินงาน
@@ -208,7 +208,7 @@ function UserManagement({ users, setUsers, projects }: { users: UserItem[], setU
   };
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
            <h3 className="font-extrabold text-slate-800 text-lg mb-1">กำหนดสิทธิ์ผู้ใช้งาน</h3>
@@ -233,11 +233,11 @@ function UserManagement({ users, setUsers, projects }: { users: UserItem[], setU
         <table className="w-full text-left border-collapse min-w-[700px]">
           <thead>
             <tr className="bg-slate-100 text-[11px] text-slate-500 uppercase tracking-widest">
-              <th className="py-4 px-5 font-bold rounded-tl-xl border-b border-slate-300">ชื่อ-นามสกุล</th>
-              <th className="py-4 px-5 font-bold border-b border-slate-300">อีเมล</th>
-              <th className="py-4 px-5 font-bold border-b border-slate-300">สิทธิ์การใช้งาน</th>
-              <th className="py-4 px-5 font-bold border-b border-slate-300">สถานะ</th>
-              <th className="py-4 px-5 font-bold text-right rounded-tr-xl border-b border-slate-300">จัดการ</th>
+              <th className="py-4 px-5 font-bold rounded-tl-xl border-b border-slate-200">ชื่อ-นามสกุล</th>
+              <th className="py-4 px-5 font-bold border-b border-slate-200">อีเมล</th>
+              <th className="py-4 px-5 font-bold border-b border-slate-200">สิทธิ์การใช้งาน</th>
+              <th className="py-4 px-5 font-bold border-b border-slate-200">สถานะ</th>
+              <th className="py-4 px-5 font-bold text-right rounded-tr-xl border-b border-slate-200">จัดการ</th>
             </tr>
           </thead>
           <tbody className="text-sm">
@@ -280,16 +280,16 @@ function UserManagement({ users, setUsers, projects }: { users: UserItem[], setU
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">ชื่อ-นามสกุล</label>
-                <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" placeholder="ระบุชื่อ-นามสกุล" />
+                <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" placeholder="ระบุชื่อ-นามสกุล" />
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">อีเมล</label>
-                <input type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" placeholder="ระบุอีเมล" />
+                <input type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors" placeholder="ระบุอีเมล" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">สิทธิ์การใช้งาน</label>
-                  <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} className="w-full bg-slate-100 border border-slate-300 text-slate-700 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
+                  <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} className="w-full bg-slate-100 border border-slate-200 text-slate-700 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                     <option value="Admin">Admin</option>
                     <option value="Staff">Staff</option>
                     <option value="User">User</option>
@@ -297,7 +297,7 @@ function UserManagement({ users, setUsers, projects }: { users: UserItem[], setU
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">สถานะ</label>
-                  <select value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})} className="w-full bg-slate-100 border border-slate-300 text-slate-700 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
+                  <select value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})} className="w-full bg-slate-100 border border-slate-200 text-slate-700 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
@@ -397,7 +397,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
   };
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       {deleteConfirmId && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative text-center">
@@ -455,7 +455,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="เช่น การบรรยายพิเศษ เรื่อง..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -465,7 +465,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
                   />
                 </div>
                 <div>
@@ -475,7 +475,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
                     placeholder="เช่น 09:00 - 10:30"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
                   />
                 </div>
                 <div>
@@ -485,7 +485,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                     value={formData.room}
                     onChange={(e) => setFormData({ ...formData, room: e.target.value })}
                     placeholder="เช่น ห้องประชุม 1"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium"
                   />
                 </div>
               </div>
@@ -506,7 +506,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
           </div>
         )}
         {filteredSessions.map((s) => (
-          <div key={s.id} className="flex flex-col p-5 rounded-2xl border bg-slate-100 border-slate-300 transition-colors group hover:border-indigo-200">
+          <div key={s.id} className="flex flex-col p-5 rounded-2xl border bg-slate-100 border-slate-200 transition-colors group hover:border-indigo-200">
             {editingId === s.id ? (
               <div className="flex flex-col gap-4">
                 <div>
@@ -515,7 +515,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -525,7 +525,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                       type="date"
                       value={formData.date}
                       onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                     />
                   </div>
                   <div>
@@ -535,7 +535,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                       value={formData.time}
                       onChange={(e) => setFormData({ ...formData, time: e.target.value })}
                       placeholder="เช่น 09:00 - 10:30"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                     />
                   </div>
                   <div>
@@ -544,7 +544,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                       type="text"
                       value={formData.room}
                       onChange={(e) => setFormData({ ...formData, room: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                     />
                   </div>
                 </div>
@@ -552,7 +552,7 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                   <button onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                     บันทึก
                   </button>
-                  <button onClick={handleCancel} className="bg-slate-200 border border-slate-300 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
+                  <button onClick={handleCancel} className="bg-slate-200 border border-slate-200 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
                     ยกเลิก
                   </button>
                 </div>
@@ -562,17 +562,17 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                 <div className="flex-1 pr-4">
                   <h4 className="font-bold text-slate-800 text-sm mb-2">{s.title}</h4>
                   <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs text-slate-500 font-semibold">
-                     {s.date && <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-300"><Calendar size={12} className="text-indigo-500"/> {formatThaiDate(s.date)}</span>}
-                     <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-300"><Clock size={12} className="text-indigo-500"/> {s.time}</span>
-                     <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-300"><LayoutDashboard size={12} className="text-indigo-500"/> {s.room}</span>
+                     {s.date && <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-200"><Calendar size={12} className="text-indigo-500"/> {formatThaiDate(s.date)}</span>}
+                     <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-200"><Clock size={12} className="text-indigo-500"/> {s.time}</span>
+                     <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-200"><LayoutDashboard size={12} className="text-indigo-500"/> {s.room}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex gap-2">
-                    <button onClick={() => handleEdit(s)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleEdit(s)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Edit size={16} />
                     </button>
-                    <button onClick={() => handleDelete(s.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleDelete(s.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -651,7 +651,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
   ];
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการระบบและลิงก์ข้อมูล</h3>
@@ -678,7 +678,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
               const isEditing = editingLinkKey === config.key;
 
               return (
-                <div key={config.key} className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-300 shadow-[0_2px_15px_rgba(0,0,0,0.02)] transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div key={config.key} className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-[0_2px_15px_rgba(0,0,0,0.02)] transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   {isEditing ? (
                     <div className="flex-1 w-full flex flex-col sm:flex-row gap-3">
                        <input
@@ -686,7 +686,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
                         value={linkInputTemp}
                         onChange={(e) => setLinkInputTemp(e.target.value)}
                         placeholder={`ระบุ URL ${config.label}...`}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-100 text-slate-800"
+                        className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-100 text-slate-800"
                         autoFocus
                       />
                       <div className="flex gap-2">
@@ -728,7 +728,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
                             setEditingLinkKey(config.key);
                             setLinkInputTemp(currentValue);
                           }}
-                          className="w-10 h-10 flex items-center justify-center bg-white border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                          className="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
                         >
                           <Edit size={18} strokeWidth={1.5} />
                         </button>
@@ -738,7 +738,7 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
                               handleLinkChange(config.key, '');
                             }
                           }}
-                          className="w-10 h-10 flex items-center justify-center bg-white border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                          className="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
                         >
                           <Trash2 size={18} strokeWidth={1.5} />
                         </button>
@@ -750,13 +750,13 @@ function SystemManagement({ projects, setProjects }: { projects: ProjectItem[], 
             })}
           </div>
 
-          <div className="mt-8 pt-8 border-t border-slate-300">
+          <div className="mt-8 pt-8 border-t border-slate-200">
             <h4 className="font-bold text-slate-800 mb-4">การแสดงผลเมนูหลัก (สำหรับผู้ใช้งาน)</h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {featureConfigs.map(config => {
                 const isEnabled = selectedProject.features?.[config.key] !== false; // Default true
                 return (
-                  <label key={config.key} className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-300 cursor-pointer hover:bg-slate-100 transition-colors">
+                  <label key={config.key} className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
                     <span className="text-sm font-bold text-slate-700">{config.label}</span>
                     <div className="relative inline-block w-10 h-6 shrink-0 transition-colors duration-200 ease-in-out">
                       <input 
@@ -795,11 +795,7 @@ function ProjectManagement({
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleToggle = (id: string, currentStatus: boolean) => {
-    if (!currentStatus) {
-      setProjects(projects.map(p => ({ ...p, isActive: p.id === id })));
-    } else {
-      setProjects(projects.map(p => ({ ...p, isActive: false })));
-    }
+    setProjects(projects.map(p => p.id === id ? { ...p, isActive: !currentStatus } : p));
   };
 
   const handleDelete = (id: string) => {
@@ -862,7 +858,7 @@ function ProjectManagement({
   };
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
            <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการโครงการ</h3>
@@ -879,7 +875,7 @@ function ProjectManagement({
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-300">
+        <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-200">
           <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขโครงการ' : 'เพิ่มโครงการใหม่'}</h4>
           <div className="space-y-4">
             <div>
@@ -889,7 +885,7 @@ function ProjectManagement({
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="ระบุชื่อโครงการ..."
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                 required
                 autoFocus
               />
@@ -901,7 +897,7 @@ function ProjectManagement({
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                 />
               </div>
               <div>
@@ -910,7 +906,7 @@ function ProjectManagement({
                   type="date"
                   value={formData.endDate}
                   onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                 />
               </div>
               <div>
@@ -919,7 +915,7 @@ function ProjectManagement({
                   type="time"
                   value={formData.startTime}
                   onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
                 />
               </div>
             </div>
@@ -930,14 +926,14 @@ function ProjectManagement({
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="ระบุสถานที่ประชุม..."
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
               />
             </div>
             <div className="flex gap-3 pt-2">
               <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                 บันทึก
               </button>
-              <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-300 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
+              <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-200 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
                 ยกเลิก
               </button>
             </div>
@@ -947,7 +943,7 @@ function ProjectManagement({
 
       <div className="space-y-4">
         {projects.map((p) => (
-          <div key={p.id} className={`flex flex-col md:flex-row md:items-center justify-between p-5 rounded-2xl border transition-colors group ${p.isActive ? 'bg-indigo-50/40 border-indigo-200' : 'bg-slate-200 border-slate-300 opacity-80'}`}>
+          <div key={p.id} className={`flex flex-col md:flex-row md:items-center justify-between p-5 rounded-2xl border transition-colors group ${p.isActive ? 'bg-indigo-50/40 border-indigo-200' : 'bg-slate-200 border-slate-200 opacity-80'}`}>
             <div className="flex-1 pr-4 mb-4 md:mb-0">
               <h4 className={`font-extrabold text-base md:text-lg leading-relaxed text-balance break-words mb-3 ${p.isActive ? 'text-indigo-900' : 'text-slate-800'}`}>{p.name}</h4>
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-semibold mb-3">
@@ -965,7 +961,7 @@ function ProjectManagement({
                   </div>
                 )}
                 {p.location && (
-                  <div className="flex items-center gap-1.5 border-l border-slate-300 pl-3">
+                  <div className="flex items-center gap-1.5 border-l border-slate-200 pl-3">
                     <MapPin size={12} className="text-indigo-500" /> {p.location}
                   </div>
                 )}
@@ -980,10 +976,10 @@ function ProjectManagement({
                 <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-200 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500"></div>
               </label>
               <div className="flex gap-2">
-                <button onClick={() => handleEdit(p)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                <button onClick={() => handleEdit(p)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                   <Edit size={16} />
                 </button>
-                <button onClick={() => handleDelete(p.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                <button onClick={() => handleDelete(p.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -1019,7 +1015,7 @@ function SearchableProjectDropdown({
     <div className="relative">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-[200px] sm:w-[250px] px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-100 text-slate-800 truncate"
+        className="flex items-center justify-between w-[200px] sm:w-[250px] px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-100 text-slate-800 truncate"
       >
         <span className="truncate mr-2">
           {projects.length === 0 ? "ไม่มีโครงการ" : selectedProject ? selectedProject.name : "เลือกโครงการ..."}
@@ -1030,7 +1026,7 @@ function SearchableProjectDropdown({
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>
-          <div className="absolute z-50 top-full mt-2 w-[300px] sm:w-[350px] right-0 sm:left-0 bg-slate-200 rounded-xl shadow-xl border border-slate-300 overflow-hidden">
+          <div className="absolute z-50 top-full mt-2 w-[300px] sm:w-[350px] right-0 sm:left-0 bg-slate-200 rounded-xl shadow-xl border border-slate-200 overflow-hidden">
             <div className="p-2 border-b border-slate-50">
               <div className="relative">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -1134,7 +1130,7 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
   const documents = selectedProject?.documents || [];
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการผังที่นั่ง-รายชื่อ</h3>
@@ -1190,7 +1186,7 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
       ) : (
         <>
           {isFormOpen && (
-            <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-300">
+            <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-200">
               <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขผังที่นั่ง-รายชื่อ' : 'เพิ่มผังที่นั่ง-รายชื่อใหม่'}</h4>
               <div className="space-y-4">
                 <div>
@@ -1200,7 +1196,7 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="ระบุชื่อผังที่นั่ง-รายชื่อ..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
                 </div>
@@ -1211,7 +1207,7 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
                     value={formData.url}
                     onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                     placeholder="https://..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
                 </div>
@@ -1222,14 +1218,14 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     placeholder="ระบุวันที่..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                   />
                 </div>
                 <div className="flex gap-3 pt-2">
                   <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                     บันทึก
                   </button>
-                  <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-300 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
+                  <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-200 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
                     ยกเลิก
                   </button>
                 </div>
@@ -1239,12 +1235,12 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
 
           <div className="space-y-3">
             {documents.length === 0 && !isFormOpen ? (
-              <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-300 rounded-2xl">
+              <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-200 rounded-2xl">
                 ยังไม่มีข้อมูลผังที่นั่ง-รายชื่อสำหรับโครงการนี้
               </div>
             ) : (
               documents.map((doc) => (
-                <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-200 border border-slate-300 rounded-2xl hover:border-slate-300 transition-colors gap-4">
+                <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-200 border border-slate-200 rounded-2xl hover:border-slate-200 transition-colors gap-4">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center shrink-0">
                       <FileText size={20} />
@@ -1258,10 +1254,10 @@ function DocumentManagement({ projects, setProjects }: { projects: ProjectItem[]
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => handleEdit(doc)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleEdit(doc)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Edit size={16} />
                     </button>
-                    <button onClick={() => handleDelete(doc.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleDelete(doc.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -1341,7 +1337,7 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
   const other_documents = selectedProject?.other_documents || [];
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการเอกสารที่เกี่ยวข้อง</h3>
@@ -1397,7 +1393,7 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
       ) : (
         <>
           {isFormOpen && (
-            <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-300">
+            <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-200">
               <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขเอกสารที่เกี่ยวข้อง' : 'เพิ่มเอกสารที่เกี่ยวข้องใหม่'}</h4>
               <div className="space-y-4">
                 <div>
@@ -1407,7 +1403,7 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="ระบุชื่อเอกสารที่เกี่ยวข้อง..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
                 </div>
@@ -1418,7 +1414,7 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
                     value={formData.url}
                     onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                     placeholder="https://..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
                 </div>
@@ -1429,14 +1425,14 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     placeholder="ระบุวันที่..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                   />
                 </div>
                 <div className="flex gap-3 pt-2">
                   <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                     บันทึก
                   </button>
-                  <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-300 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
+                  <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-200 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
                     ยกเลิก
                   </button>
                 </div>
@@ -1446,12 +1442,12 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
 
           <div className="space-y-3">
             {other_documents.length === 0 && !isFormOpen ? (
-              <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-300 rounded-2xl">
+              <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-200 rounded-2xl">
                 ยังไม่มีข้อมูลเอกสารที่เกี่ยวข้องสำหรับโครงการนี้
               </div>
             ) : (
               other_documents.map((doc) => (
-                <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-200 border border-slate-300 rounded-2xl hover:border-slate-300 transition-colors gap-4">
+                <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-200 border border-slate-200 rounded-2xl hover:border-slate-200 transition-colors gap-4">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center shrink-0">
                       <Files size={20} />
@@ -1465,10 +1461,10 @@ function OtherDocumentManagement({ projects, setProjects }: { projects: ProjectI
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => handleEdit(doc)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleEdit(doc)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Edit size={16} />
                     </button>
-                    <button onClick={() => handleDelete(doc.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleDelete(doc.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -1546,7 +1542,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
   const ebook_documents = selectedProject?.ebook_documents || [];
 
   return (
-    <div className="bg-slate-200 rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-300">
+    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการผังแนวทางการดำเนินงาน</h3>
@@ -1602,7 +1598,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
       ) : (
         <>
           {isFormOpen && (
-            <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-300">
+            <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-200">
               <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขผังแนวทางการดำเนินงาน' : 'เพิ่มผังแนวทางการดำเนินงานใหม่'}</h4>
               <div className="space-y-4">
                 <div>
@@ -1612,7 +1608,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="ระบุชื่อผังแนวทางการดำเนินงาน..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
                 </div>
@@ -1623,7 +1619,7 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
                     value={formData.url}
                     onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                     placeholder="https://..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                     required
                   />
                 </div>
@@ -1634,14 +1630,14 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     placeholder="ระบุวันที่..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium bg-slate-200"
                   />
                 </div>
                 <div className="flex gap-3 pt-2">
                   <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                     บันทึก
                   </button>
-                  <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-300 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
+                  <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-200 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
                     ยกเลิก
                   </button>
                 </div>
@@ -1651,12 +1647,12 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
 
           <div className="space-y-3">
             {ebook_documents.length === 0 && !isFormOpen ? (
-              <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-300 rounded-2xl">
+              <div className="text-center py-8 text-slate-500 font-medium text-sm border-2 border-dashed border-slate-200 rounded-2xl">
                 ยังไม่มีข้อมูลผังแนวทางการดำเนินงานสำหรับโครงการนี้
               </div>
             ) : (
               ebook_documents.map((doc) => (
-                <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-200 border border-slate-300 rounded-2xl hover:border-slate-300 transition-colors gap-4">
+                <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-200 border border-slate-200 rounded-2xl hover:border-slate-200 transition-colors gap-4">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center shrink-0">
                       <BookOpen size={20} />
@@ -1670,10 +1666,10 @@ function EbookManagement({ projects, setProjects }: { projects: ProjectItem[], s
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => handleEdit(doc)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleEdit(doc)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Edit size={16} />
                     </button>
-                    <button onClick={() => handleDelete(doc.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-300 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleDelete(doc.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Trash2 size={16} />
                     </button>
                   </div>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, X, AlignLeft, Edit, Trash2, Printer, Download, Plus } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
-import { useReactToPrint } from 'react-to-print';
 import { ProjectItem, SessionItem } from '../types';
 import { CalendarEvent } from '../types';
 
@@ -150,25 +149,9 @@ export default function CalendarView({ events, setEvents, projects = [], session
     });
   };
 
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    documentTitle: `รายงานกิจกรรม-${monthNamesThai[month]}-${year + 543}`,
-    onBeforePrint: () => {
-      const element = printRef.current;
-      if (element) {
-        element.classList.remove('hidden');
-        element.style.display = 'block';
-      }
-      return Promise.resolve();
-    },
-    onAfterPrint: () => {
-      const element = printRef.current;
-      if (element) {
-        element.style.display = '';
-        element.classList.add('hidden');
-      }
-    }
-  });
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full animate-fade-in print:p-0">

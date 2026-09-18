@@ -10,9 +10,10 @@ interface HomeViewProps {
   setCurrentView: (view: ViewType) => void;
   sessions: SessionItem[];
   projects: ProjectItem[];
+  activeProject?: ProjectItem;
 }
 
-export default function HomeView({ setCurrentView, sessions, projects }: HomeViewProps) {
+export default function HomeView({ setCurrentView, sessions, projects, activeProject }: HomeViewProps) {
     const quickAccessButtons = [
     { icon: UserPlus, label: 'แบบแจ้งรายชื่อ', view: 'register' as ViewType, color: 'text-pink-700', bg: 'bg-gradient-to-br from-pink-200 to-rose-300', hover: 'hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-1' },
     { icon: Download, label: 'ผังที่นั่ง-รายชื่อ', view: 'download' as ViewType, color: 'text-blue-700', bg: 'bg-gradient-to-br from-blue-200 to-indigo-300', hover: 'hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-1' },
@@ -26,7 +27,7 @@ export default function HomeView({ setCurrentView, sessions, projects }: HomeVie
   ];
 
   
-  const activeProject = projects.find(p => p.isActive);
+  
   const activeSessions = sessions.filter(s => activeProject ? s.projectId === activeProject.id : false);
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
   
@@ -129,7 +130,7 @@ export default function HomeView({ setCurrentView, sessions, projects }: HomeVie
 
       <div className="space-y-6 print:space-y-0">
         {/* Countdown Card (Light Background) */}
-        <div className="bg-slate-100/80 rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 print:hidden flex flex-col items-center relative">
+        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 print:hidden flex flex-col items-center relative">
           <div className="w-full mb-6">
              <h3 className="font-extrabold text-slate-800 uppercase tracking-wider flex items-center justify-start gap-2 text-sm md:text-base">
                <div className="w-1.5 h-4 bg-blue-500 rounded-full"></div>
@@ -156,7 +157,7 @@ export default function HomeView({ setCurrentView, sessions, projects }: HomeVie
         </div>
 
         {/* Quick Access (Smaller Cards, neatly arranged) */}
-        <div className="bg-slate-100/80 rounded-3xl p-5 md:p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 print:hidden">
+        <div className="bg-white rounded-3xl p-5 md:p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 print:hidden">
           <h3 className="font-extrabold text-slate-800 mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
              <div className="w-1.5 h-4 bg-blue-500 rounded-full"></div>
              เข้าถึงด่วน
@@ -181,7 +182,7 @@ export default function HomeView({ setCurrentView, sessions, projects }: HomeVie
         </div>
 
         {/* Schedule */}
-        <div className="bg-slate-100 rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 flex flex-col overflow-hidden print:shadow-none print:border-none print:rounded-none">
+        <div className="bg-white rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200 flex flex-col overflow-hidden print:shadow-none print:border-none print:rounded-none">
           {/* Print-only Event Header */}
           <div className="hidden print:block mb-8 border-b-2 border-slate-800 pb-4">
             <h1 className="text-2xl font-bold text-black mb-2">{activeProject ? activeProject.name : 'กำหนดการ'}</h1>
