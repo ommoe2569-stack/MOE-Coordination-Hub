@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, BookOpen, Users, Calendar, LayoutDashboard, Shield, Edit, Trash2, Plus, LogOut, Briefcase, Clock, MapPin, Search, ChevronDown, Check, FileText , Files } from 'lucide-react';
+import { Lock, BookOpen, Users, Calendar, LayoutDashboard, Shield, Edit, Trash2, Plus, LogOut, Briefcase, Clock, MapPin, Search, ChevronDown, ChevronUp, Check, FileText, Files, Activity, X } from 'lucide-react';
 import { SessionItem, ProjectItem, UserItem, UserRole } from '../types';
 
 interface AdminViewProps {
@@ -144,7 +144,7 @@ export default function AdminView({ userRole, setUserRole, sessions, setSessions
 
         {/* Admin Content */}
         <div className="md:col-span-3">
-          {activeTab === 'projects' && <ProjectManagement projects={projects} setProjects={setProjects} users={users} setUsers={setUsers} />}
+          {activeTab === 'projects' && <ProjectManagement projects={projects} setProjects={setProjects} users={users} setUsers={setUsers} sessions={sessions} setSessions={setSessions} />}
           {activeTab === 'users' && <UserManagement users={users} setUsers={setUsers} projects={projects} />}
           {activeTab === 'sessions' && <SessionManagement sessions={sessions} setSessions={setSessions} projects={projects} />}
           {activeTab === 'menus' && <SystemManagement projects={projects} setProjects={setProjects} />}
@@ -370,12 +370,16 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
         date: formData.date,
         time: formData.time,
         room: formData.room,
-        isActive: false,
+        isActive: true,
         projectId: formData.projectId
       };
       setSessions([...sessions, newSession]);
       setIsAddingSession(false);
     }
+  };
+
+  const handleToggleSession = (id: string, currentStatus: boolean) => {
+    setSessions(sessions.map(s => s.id === id ? { ...s, isActive: !currentStatus } : s));
   };
 
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -567,12 +571,27 @@ function SessionManagement({ sessions, setSessions, projects }: { sessions: Sess
                      <span className="flex items-center gap-1.5 bg-slate-200 px-2.5 py-1 rounded-md border border-slate-200"><LayoutDashboard size={12} className="text-indigo-500"/> {s.room}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex gap-2">
-                    <button onClick={() => handleEdit(s)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                <div className="flex items-center gap-3 md:gap-4 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${s.isActive !== false ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'}`}>
+                      {s.isActive !== false ? <Check size={12} /> : <X size={12} />}
+                      {s.isActive !== false ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}
+                    </span>
+                    <label className="relative inline-flex items-center cursor-pointer select-none" title={s.isActive !== false ? "คลิกเพื่อปิดกิจกรรม" : "คลิกเพื่อเปิดกิจกรรม"}>
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={s.isActive !== false} 
+                        onChange={() => handleToggleSession(s.id, s.isActive !== false)} 
+                      />
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <button onClick={() => handleEdit(s)} title="แก้ไข Session" className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
                       <Edit size={16} />
                     </button>
-                    <button onClick={() => handleDelete(s.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
+                    <button onClick={() => handleDelete(s.id)} title="ลบ Session" className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition-colors shadow-sm">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -783,16 +802,44 @@ function ProjectManagement({
   projects, 
   setProjects,
   users,
-  setUsers
+  setUsers,
+  sessions,
+  setSessions
 }: { 
   projects: ProjectItem[], 
   setProjects: (p: ProjectItem[]) => void,
   users: UserItem[],
-  setUsers: (u: UserItem[]) => void
+  setUsers: (u: UserItem[]) => void,
+  sessions: SessionItem[],
+  setSessions: (s: SessionItem[]) => void
 }) {
   const [formData, setFormData] = useState({ name: '', startDate: '', endDate: '', startTime: '', location: '' });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Activity management state inside ProjectManagement
+  const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
+  const [addingSessionForProjectId, setAddingSessionForProjectId] = useState<string | null>(null);
+  const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
+  const [sessionFormData, setSessionFormData] = useState({
+    title: '',
+    time: '',
+    date: '',
+    room: '',
+    tag: 'บรรยาย'
+  });
+  const [deleteSessionConfirm, setDeleteSessionConfirm] = useState<SessionItem | null>(null);
+
+  const isProjectExpanded = (id: string) => {
+    return expandedProjects[id] !== false; // Default expanded for all
+  };
+
+  const toggleProjectExpand = (id: string) => {
+    setExpandedProjects(prev => ({
+      ...prev,
+      [id]: prev[id] === undefined ? false : !prev[id]
+    }));
+  };
 
   const handleToggle = (id: string, currentStatus: boolean) => {
     setProjects(projects.map(p => p.id === id ? { ...p, isActive: !currentStatus } : p));
@@ -846,6 +893,86 @@ function ProjectManagement({
     }
   };
 
+  // Activity Handlers
+  const handleToggleSession = (sessionId: string, currentStatus: boolean) => {
+    setSessions(sessions.map(s => s.id === sessionId ? { ...s, isActive: !currentStatus } : s));
+  };
+
+  const handleToggleAllSessions = (projectId: string, enable: boolean) => {
+    setSessions(sessions.map(s => s.projectId === projectId ? { ...s, isActive: enable } : s));
+  };
+
+  const openAddSession = (projectId: string) => {
+    const project = projects.find(p => p.id === projectId);
+    setAddingSessionForProjectId(projectId);
+    setEditingSessionId(null);
+    setSessionFormData({
+      title: '',
+      time: '',
+      date: project?.startDate || '',
+      room: project?.location || '',
+      tag: 'บรรยาย'
+    });
+  };
+
+  const openEditSession = (session: SessionItem) => {
+    setEditingSessionId(session.id);
+    setAddingSessionForProjectId(session.projectId || null);
+    setSessionFormData({
+      title: session.title,
+      time: session.time,
+      date: session.date || '',
+      room: session.room || '',
+      tag: session.tag || 'ทั่วไป'
+    });
+  };
+
+  const closeSessionForm = () => {
+    setAddingSessionForProjectId(null);
+    setEditingSessionId(null);
+    setSessionFormData({ title: '', time: '', date: '', room: '', tag: 'บรรยาย' });
+  };
+
+  const handleSaveSession = (projectId: string) => {
+    if (!sessionFormData.title.trim() || !sessionFormData.time.trim()) {
+      alert('กรุณาระบุชื่อกิจกรรมและเวลาให้ครบถ้วน');
+      return;
+    }
+
+    if (editingSessionId) {
+      setSessions(sessions.map(s => s.id === editingSessionId ? {
+        ...s,
+        title: sessionFormData.title,
+        time: sessionFormData.time,
+        date: sessionFormData.date,
+        room: sessionFormData.room,
+        tag: sessionFormData.tag
+      } : s));
+      closeSessionForm();
+    } else {
+      const newSession: SessionItem = {
+        id: `s-${Date.now()}`,
+        title: sessionFormData.title,
+        time: sessionFormData.time,
+        date: sessionFormData.date,
+        room: sessionFormData.room,
+        tag: sessionFormData.tag,
+        tagColor: sessionFormData.tag === 'พัก' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700',
+        isActive: true,
+        projectId
+      };
+      setSessions([...sessions, newSession]);
+      closeSessionForm();
+    }
+  };
+
+  const confirmDeleteSession = () => {
+    if (deleteSessionConfirm) {
+      setSessions(sessions.filter(s => s.id !== deleteSessionConfirm.id));
+      setDeleteSessionConfirm(null);
+    }
+  };
+
   const formatThaiDate = (dateString?: string) => {
     if (!dateString) return 'ยังไม่ระบุวันที่';
     try {
@@ -858,11 +985,39 @@ function ProjectManagement({
   };
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
+    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-200">
+      {/* Activity Delete Confirmation Modal */}
+      {deleteSessionConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative text-center">
+            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={32} />
+            </div>
+            <h3 className="text-xl font-bold text-slate-800 mb-2">ยืนยันการลบกิจกรรม</h3>
+            <p className="text-slate-500 mb-6 text-sm">คุณแน่ใจหรือไม่ว่าต้องการลบกิจกรรม "{deleteSessionConfirm.title}"? การดำเนินการนี้ไม่สามารถย้อนกลับได้</p>
+            
+            <div className="flex gap-3 justify-center">
+              <button 
+                onClick={() => setDeleteSessionConfirm(null)} 
+                className="px-5 py-2.5 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors flex-1"
+              >
+                ยกเลิก
+              </button>
+              <button 
+                onClick={confirmDeleteSession} 
+                className="px-5 py-2.5 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors shadow-sm flex-1"
+              >
+                ลบกิจกรรม
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-           <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการโครงการ</h3>
-           <p className="text-xs font-semibold text-slate-500">จัดการข้อมูลโครงการที่ต้องการแสดงบนหน้าหลัก (เปิดใช้งานได้ครั้งละ 1 โครงการ)</p>
+          <h3 className="font-extrabold text-slate-800 text-lg mb-1">จัดการโครงการและกิจกรรม</h3>
+          <p className="text-xs font-semibold text-slate-500">จัดการข้อมูลโครงการ และเปิด-ปิดแต่ละกิจกรรมที่ต้องการแสดงผลบนหน้าหลัก</p>
         </div>
         {!isFormOpen && (
           <button
@@ -875,7 +1030,7 @@ function ProjectManagement({
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleSubmit} className="mb-6 bg-slate-100 p-5 rounded-2xl border border-slate-200">
+        <form onSubmit={handleSubmit} className="mb-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
           <h4 className="font-bold text-slate-700 mb-4">{editingId ? 'แก้ไขโครงการ' : 'เพิ่มโครงการใหม่'}</h4>
           <div className="space-y-4">
             <div>
@@ -885,7 +1040,7 @@ function ProjectManagement({
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="ระบุชื่อโครงการ..."
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium bg-white"
                 required
                 autoFocus
               />
@@ -897,7 +1052,7 @@ function ProjectManagement({
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium bg-white"
                 />
               </div>
               <div>
@@ -906,7 +1061,7 @@ function ProjectManagement({
                   type="date"
                   value={formData.endDate}
                   onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium bg-white"
                 />
               </div>
               <div>
@@ -915,7 +1070,7 @@ function ProjectManagement({
                   type="time"
                   value={formData.startTime}
                   onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium bg-white"
                 />
               </div>
             </div>
@@ -926,14 +1081,14 @@ function ProjectManagement({
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="ระบุสถานที่ประชุม..."
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium bg-white"
               />
             </div>
             <div className="flex gap-3 pt-2">
               <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                 บันทึก
               </button>
-              <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-200 hover:bg-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
+              <button type="button" onClick={closeForm} className="bg-slate-200 border border-slate-200 hover:bg-slate-300 text-slate-600 px-6 py-2.5 rounded-xl font-bold text-sm transition-colors">
                 ยกเลิก
               </button>
             </div>
@@ -941,54 +1096,379 @@ function ProjectManagement({
         </form>
       )}
 
-      <div className="space-y-4">
-        {projects.map((p) => (
-          <div key={p.id} className={`flex flex-col md:flex-row md:items-center justify-between p-5 rounded-2xl border transition-colors group ${p.isActive ? 'bg-indigo-50/40 border-indigo-200' : 'bg-slate-200 border-slate-200 opacity-80'}`}>
-            <div className="flex-1 pr-4 mb-4 md:mb-0">
-              <h4 className={`font-extrabold text-base md:text-lg leading-relaxed text-balance break-words mb-3 ${p.isActive ? 'text-indigo-900' : 'text-slate-800'}`}>{p.name}</h4>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-semibold mb-3">
-                {(p.startDate || p.endDate || p.startTime) && (
-                  <div className="flex items-center gap-3">
-                    {(p.startDate || p.endDate) && (
-                      <span className="flex items-center gap-1.5">
-                        <Calendar size={12} className="text-indigo-500"/> 
-                        {p.startDate && p.endDate && p.startDate !== p.endDate 
-                          ? `${formatThaiDate(p.startDate)} - ${formatThaiDate(p.endDate)}`
-                          : formatThaiDate(p.startDate || p.endDate)}
-                      </span>
+      <div className="space-y-6">
+        {projects.map((p) => {
+          const projectSessions = sessions.filter(s => s.projectId === p.id);
+          const activeSessionsCount = projectSessions.filter(s => s.isActive !== false).length;
+          const expanded = isProjectExpanded(p.id);
+
+          return (
+            <div 
+              key={p.id} 
+              className={`rounded-3xl border transition-all overflow-hidden ${
+                p.isActive 
+                  ? 'bg-white border-indigo-200 shadow-md ring-1 ring-indigo-50' 
+                  : 'bg-slate-50 border-slate-200 opacity-90'
+              }`}
+            >
+              {/* Project Card Header */}
+              <div className="p-5 md:p-6 bg-gradient-to-r from-slate-50/50 to-white flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100">
+                <div className="flex-1 pr-4">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <span className={`px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider ${
+                      p.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'
+                    }`}>
+                      {p.isActive ? 'โครงการเปิดใช้งาน' : 'โครงการปิดใช้งาน'}
+                    </span>
+                    <span className="text-xs font-bold text-slate-500 bg-white px-2.5 py-0.5 rounded-md border border-slate-200">
+                      กิจกรรม {projectSessions.length} รายการ (เปิดใช้งาน {activeSessionsCount} รายการ)
+                    </span>
+                  </div>
+
+                  <h4 className={`font-extrabold text-base md:text-lg leading-relaxed text-balance break-words mb-2 ${
+                    p.isActive ? 'text-indigo-950' : 'text-slate-800'
+                  }`}>
+                    {p.name}
+                  </h4>
+
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-semibold">
+                    {(p.startDate || p.endDate || p.startTime) && (
+                      <div className="flex items-center gap-3">
+                        {(p.startDate || p.endDate) && (
+                          <span className="flex items-center gap-1.5">
+                            <Calendar size={13} className="text-indigo-500"/> 
+                            {p.startDate && p.endDate && p.startDate !== p.endDate 
+                              ? `${formatThaiDate(p.startDate)} - ${formatThaiDate(p.endDate)}`
+                              : formatThaiDate(p.startDate || p.endDate)}
+                          </span>
+                        )}
+                        {p.startTime && <span className="flex items-center gap-1.5"><Clock size={13} className="text-indigo-500"/> {p.startTime} น.</span>}
+                      </div>
                     )}
-                    {p.startTime && <span className="flex items-center gap-1.5"><Clock size={12} className="text-indigo-500"/> {p.startTime} น.</span>}
+                    {p.location && (
+                      <div className="flex items-center gap-1.5 border-l border-slate-200 pl-3">
+                        <MapPin size={13} className="text-indigo-500" /> {p.location}
+                      </div>
+                    )}
                   </div>
-                )}
-                {p.location && (
-                  <div className="flex items-center gap-1.5 border-l border-slate-200 pl-3">
-                    <MapPin size={12} className="text-indigo-500" /> {p.location}
+                </div>
+
+                {/* Project Controls */}
+                <div className="flex items-center gap-3 shrink-0 flex-wrap">
+                  <div className="flex items-center gap-2 bg-slate-100/80 px-3 py-1.5 rounded-xl border border-slate-200">
+                    <span className="text-xs font-bold text-slate-600">เปิด-ปิดโครงการ:</span>
+                    <label className="relative inline-flex items-center cursor-pointer select-none" title="เปิดหรือปิดการแสดงผลโครงการนี้">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={p.isActive} 
+                        onChange={() => handleToggle(p.id, p.isActive)} 
+                      />
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    </label>
                   </div>
-                )}
+
+                  <div className="flex gap-1.5">
+                    <button 
+                      onClick={() => handleEdit(p)} 
+                      title="แก้ไขโครงการ" 
+                      className="w-9 h-9 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                    >
+                      <Edit size={16} />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(p.id)} 
+                      title="ลบโครงการ" 
+                      className="w-9 h-9 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition-colors shadow-sm"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+
+                  <button 
+                    onClick={() => toggleProjectExpand(p.id)}
+                    className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 transition-colors shadow-sm"
+                  >
+                    <span>{expanded ? 'ซ่อนกิจกรรม' : 'ดูกิจกรรม'}</span>
+                    {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-xs">
-                 <span className={`px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider ${p.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'}`}>{p.isActive ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}</span>
-              </div>
+
+              {/* Activities / Sessions Management Section */}
+              {expanded && (
+                <div className="p-5 md:p-6 bg-slate-50/70 space-y-4">
+                  {/* Activities Header with Quick Actions */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shadow-sm">
+                        <Activity size={18} />
+                      </div>
+                      <div>
+                        <h5 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                          กิจกรรมในโครงการ
+                          <span className="text-xs font-bold bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full border border-indigo-100">
+                            {activeSessionsCount} / {projectSessions.length} เปิดใช้งาน
+                          </span>
+                        </h5>
+                        <p className="text-xs text-slate-500 font-medium">
+                          คลิกปุ่มสลับเปิด-ปิด เพื่อเปิดหรือปิดการแสดงแต่ละกิจกรรมบนหน้าหลักได้ทันที
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {projectSessions.length > 0 && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleAllSessions(p.id, true)}
+                            className="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                          >
+                            เปิดทั้งหมด
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleAllSessions(p.id, false)}
+                            className="text-xs font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                          >
+                            ปิดทั้งหมด
+                          </button>
+                        </>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => openAddSession(p.id)}
+                        className="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm shadow-indigo-100"
+                      >
+                        <Plus size={14} /> เพิ่มกิจกรรม
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Inline Activity Add / Edit Form */}
+                  {addingSessionForProjectId === p.id && (
+                    <div className="p-4 md:p-5 rounded-2xl bg-white border-2 border-indigo-200 shadow-sm transition-all space-y-4">
+                      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <h5 className="font-bold text-sm text-indigo-900 flex items-center gap-2">
+                          <Activity size={16} className="text-indigo-600" />
+                          {editingSessionId ? 'แก้ไขข้อมูลกิจกรรม' : 'เพิ่มกิจกรรมใหม่สำหรับโครงการนี้'}
+                        </h5>
+                        <button 
+                          onClick={closeSessionForm} 
+                          className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                            ชื่อกิจกรรม / หัวข้อการบรรยาย <span className="text-rose-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={sessionFormData.title}
+                            onChange={(e) => setSessionFormData({ ...sessionFormData, title: e.target.value })}
+                            placeholder="เช่น การบรรยายพิเศษ เรื่อง... หรือ พักรับประทานอาหารว่าง"
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                            autoFocus
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                            เวลา <span className="text-rose-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={sessionFormData.time}
+                            onChange={(e) => setSessionFormData({ ...sessionFormData, time: e.target.value })}
+                            placeholder="เช่น 09:00 - 10:30"
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1.5">วันที่ (ถ้ามีหลายวัน)</label>
+                          <input
+                            type="date"
+                            value={sessionFormData.date}
+                            onChange={(e) => setSessionFormData({ ...sessionFormData, date: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1.5">ห้องประชุม / สถานที่</label>
+                          <input
+                            type="text"
+                            value={sessionFormData.room}
+                            onChange={(e) => setSessionFormData({ ...sessionFormData, room: e.target.value })}
+                            placeholder="เช่น ห้องประชุมพินิตประชานาถ"
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 mb-1.5">ประเภทกิจกรรม</label>
+                          <select
+                            value={sessionFormData.tag}
+                            onChange={(e) => setSessionFormData({ ...sessionFormData, tag: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-white"
+                          >
+                            <option value="บรรยาย">บรรยาย</option>
+                            <option value="พิธีการ">พิธีการ</option>
+                            <option value="พัก">พักรับประทานอาหาร / ว่าง</option>
+                            <option value="แบบแจ้งรายชื่อ">แบบแจ้งรายชื่อ</option>
+                            <option value="ทั่วไป">ทั่วไป</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={closeSessionForm}
+                          className="px-4 py-2 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                        >
+                          ยกเลิก
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSaveSession(p.id)}
+                          className="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-sm"
+                        >
+                          บันทึกกิจกรรม
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Activities List */}
+                  {projectSessions.length === 0 ? (
+                    <div className="text-center py-8 bg-white rounded-2xl border border-slate-200/80">
+                      <div className="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Activity size={20} />
+                      </div>
+                      <p className="text-sm font-bold text-slate-700 mb-1">ยังไม่มีกิจกรรมในโครงการนี้</p>
+                      <p className="text-xs text-slate-400 mb-3">คุณสามารถเพิ่มกิจกรรมและควบคุมการเปิด-ปิดการแสดงผลได้ที่นี่</p>
+                      <button
+                        type="button"
+                        onClick={() => openAddSession(p.id)}
+                        className="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 px-3 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1"
+                      >
+                        <Plus size={14} /> เพิ่มกิจกรรมแรก
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2.5">
+                      {projectSessions.map((s, sIdx) => {
+                        const isSessionActive = s.isActive !== false;
+
+                        return (
+                          <div 
+                            key={s.id} 
+                            className={`flex flex-col sm:flex-row sm:items-center justify-between p-3.5 md:p-4 rounded-2xl border transition-all gap-3 ${
+                              isSessionActive 
+                                ? 'bg-white border-slate-200/90 shadow-sm hover:border-indigo-200' 
+                                : 'bg-slate-100/60 border-dashed border-slate-300 opacity-65'
+                            }`}
+                          >
+                            <div className="flex-1 pr-2">
+                              <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                                <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 font-bold text-[11px] flex items-center justify-center shrink-0 border border-slate-200">
+                                  {sIdx + 1}
+                                </span>
+                                <span className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                                  <Clock size={11} className="text-indigo-500" /> {s.time}
+                                </span>
+                                {s.date && (
+                                  <span className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                                    <Calendar size={11} className="text-indigo-500" /> {formatThaiDate(s.date)}
+                                  </span>
+                                )}
+                                {s.tag && (
+                                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                                    s.tag === 'พัก' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700'
+                                  }`}>
+                                    {s.tag}
+                                  </span>
+                                )}
+                                {s.room && (
+                                  <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                                    <MapPin size={11} className="text-slate-400" /> {s.room}
+                                  </span>
+                                )}
+                              </div>
+                              <h5 className={`font-bold text-sm leading-relaxed ${
+                                isSessionActive ? 'text-slate-800' : 'text-slate-500 line-through'
+                              }`}>
+                                {s.title}
+                              </h5>
+                            </div>
+
+                            {/* Activity On-Off Toggle Switch and Actions */}
+                            <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
+                              {/* Status Badge */}
+                              <span className={`px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-colors ${
+                                isSessionActive 
+                                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' 
+                                  : 'bg-slate-200 text-slate-500 border border-slate-300'
+                              }`}>
+                                {isSessionActive ? <Check size={12} strokeWidth={2.5} /> : <X size={12} strokeWidth={2.5} />}
+                                {isSessionActive ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}
+                              </span>
+
+                              {/* The Toggle Button (ปุ่มเปิด-ปิด แต่ละกิจกรรม) */}
+                              <label 
+                                className="relative inline-flex items-center cursor-pointer select-none" 
+                                title={isSessionActive ? "คลิกเพื่อปิดกิจกรรมนี้ (ซ่อนจากหน้าหลัก)" : "คลิกเพื่อเปิดกิจกรรมนี้ (แสดงบนหน้าหลัก)"}
+                              >
+                                <input 
+                                  type="checkbox" 
+                                  className="sr-only peer" 
+                                  checked={isSessionActive} 
+                                  onChange={() => handleToggleSession(s.id, isSessionActive)} 
+                                />
+                                <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
+                              </label>
+
+                              {/* Edit & Delete Action Buttons */}
+                              <div className="flex items-center gap-1 border-l border-slate-200 pl-2">
+                                <button
+                                  type="button"
+                                  onClick={() => openEditSession(s)}
+                                  title="แก้ไขกิจกรรม"
+                                  className="w-8 h-8 flex items-center justify-center bg-white hover:bg-indigo-50 border border-slate-200 rounded-lg text-indigo-600 transition-colors shadow-sm"
+                                >
+                                  <Edit size={14} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setDeleteSessionConfirm(s)}
+                                  title="ลบกิจกรรม"
+                                  className="w-8 h-8 flex items-center justify-center bg-white hover:bg-rose-50 border border-slate-200 rounded-lg text-rose-600 transition-colors shadow-sm"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-            <div className="flex items-center gap-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" checked={p.isActive} onChange={() => handleToggle(p.id, p.isActive)} />
-                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-200 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500"></div>
-              </label>
-              <div className="flex gap-2">
-                <button onClick={() => handleEdit(p)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
-                  <Edit size={16} />
-                </button>
-                <button onClick={() => handleDelete(p.id)} className="w-9 h-9 flex items-center justify-center bg-slate-200 border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm">
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
+
         {projects.length === 0 && !isFormOpen && (
-          <div className="text-center py-8 text-slate-500 font-medium text-sm">
-            ยังไม่มีโครงการในระบบ
+          <div className="text-center py-12 text-slate-500 font-medium text-sm bg-slate-50 rounded-3xl border border-slate-200">
+            ยังไม่มีโครงการในระบบ คลิกที่ปุ่ม "+ เพิ่มโครงการ" ด้านบนเพื่อเริ่มต้น
           </div>
         )}
       </div>

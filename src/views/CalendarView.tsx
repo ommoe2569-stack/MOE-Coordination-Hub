@@ -11,6 +11,7 @@ interface CalendarViewProps {
   sessions?: SessionItem[];
   setProjects?: any;
   setSessions?: any;
+  activeProject?: ProjectItem;
 }
 
 const CATEGORY_CONFIG = {

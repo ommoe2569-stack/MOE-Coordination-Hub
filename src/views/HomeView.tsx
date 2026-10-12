@@ -28,7 +28,7 @@ export default function HomeView({ setCurrentView, sessions, projects, activePro
 
   
   
-  const activeSessions = sessions.filter(s => activeProject ? s.projectId === activeProject.id : false);
+  const activeSessions = sessions.filter(s => activeProject ? (s.projectId === activeProject.id && s.isActive !== false) : false);
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
   
   const visibleButtons = quickAccessButtons.filter(btn => {
