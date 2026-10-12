@@ -1112,8 +1112,8 @@ function ProjectManagement({
               }`}
             >
               {/* Project Card Header */}
-              <div className="p-5 md:p-6 bg-gradient-to-r from-slate-50/50 to-white flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100">
-                <div className="flex-1 pr-4">
+              <div className="p-5 md:p-6 bg-gradient-to-r from-slate-50/50 to-white border-b border-slate-100">
+                <div>
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <span className={`px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider ${
                       p.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'
@@ -1131,7 +1131,7 @@ function ProjectManagement({
                     {p.name}
                   </h4>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-semibold">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-semibold mb-3">
                     {(p.startDate || p.endDate || p.startTime) && (
                       <div className="flex items-center gap-3">
                         {(p.startDate || p.endDate) && (
@@ -1151,47 +1151,49 @@ function ProjectManagement({
                       </div>
                     )}
                   </div>
-                </div>
 
-                {/* Project Controls */}
-                <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                  <div className="flex items-center gap-2 bg-slate-100/80 px-3 py-1.5 rounded-xl border border-slate-200">
-                    <span className="text-xs font-bold text-slate-600">เปิด-ปิดโครงการ:</span>
-                    <label className="relative inline-flex items-center cursor-pointer select-none" title="เปิดหรือปิดการแสดงผลโครงการนี้">
-                      <input 
-                        type="checkbox" 
-                        className="sr-only peer" 
-                        checked={p.isActive} 
-                        onChange={() => handleToggle(p.id, p.isActive)} 
-                      />
-                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                    </label>
-                  </div>
+                  {/* Project Controls - Underneath Date & Time */}
+                  <div className="pt-3 border-t border-slate-100 flex items-center gap-2.5 flex-wrap">
+                    <div className="flex items-center gap-2 bg-slate-100/90 hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition-colors">
+                      <span className="text-xs font-bold text-slate-700">เปิด-ปิดโครงการ:</span>
+                      <label className="relative inline-flex items-center cursor-pointer select-none" title="เปิดหรือปิดการแสดงผลโครงการนี้">
+                        <input 
+                          type="checkbox" 
+                          className="sr-only peer" 
+                          checked={p.isActive} 
+                          onChange={() => handleToggle(p.id, p.isActive)} 
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                      </label>
+                    </div>
 
-                  <div className="flex gap-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <button 
+                        onClick={() => handleEdit(p)} 
+                        title="แก้ไขโครงการ" 
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition-colors shadow-sm"
+                      >
+                        <Edit size={14} />
+                        <span>แก้ไข</span>
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(p.id)} 
+                        title="ลบโครงการ" 
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 hover:border-rose-300 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors shadow-sm"
+                      >
+                        <Trash2 size={14} />
+                        <span>ลบ</span>
+                      </button>
+                    </div>
+
                     <button 
-                      onClick={() => handleEdit(p)} 
-                      title="แก้ไขโครงการ" 
-                      className="w-9 h-9 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm"
+                      onClick={() => toggleProjectExpand(p.id)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 px-3.5 py-1.5 rounded-xl border border-slate-200 transition-colors shadow-sm"
                     >
-                      <Edit size={16} />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(p.id)} 
-                      title="ลบโครงการ" 
-                      className="w-9 h-9 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition-colors shadow-sm"
-                    >
-                      <Trash2 size={16} />
+                      <span>{expanded ? 'ซ่อนกิจกรรม' : 'ดูกิจกรรม'}</span>
+                      {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                     </button>
                   </div>
-
-                  <button 
-                    onClick={() => toggleProjectExpand(p.id)}
-                    className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 transition-colors shadow-sm"
-                  >
-                    <span>{expanded ? 'ซ่อนกิจกรรม' : 'ดูกิจกรรม'}</span>
-                    {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </button>
                 </div>
               </div>
 
